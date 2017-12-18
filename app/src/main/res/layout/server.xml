@@ -1,0 +1,80 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="cn.vn.bluetooth.ui.MainActivity"
+    tools:ignore="MergeRootFrame" >
+
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+        
+       	<Button
+       		android:id="@+id/btn_blth_visiblity"
+ 	 		android:layout_width="match_parent"
+      	 	android:layout_height="0dp"
+      	 	android:layout_weight="1"
+      	 	android:layout_marginBottom="5dp"
+       	 	android:text="@string/btn_blth_visiblity"/>
+    	<Button 
+	        android:id="@+id/btn_blth_disconnect"
+	        android:layout_width="match_parent"
+			android:layout_height="0dp"
+	        android:layout_weight="1"
+	        android:layout_marginBottom="5dp"
+	        android:text="@string/btn_blth_disconnect"/>
+    	<TextView 
+	        android:id="@+id/tv_connect_state"
+	        android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_weight="1"
+	        android:paddingTop="10dp"
+	        android:paddingBottom="10dp"
+	        android:gravity="center"
+	        android:textSize="20sp"
+	        android:text="@string/connect_state"/>
+        <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dp"
+	        android:orientation="horizontal">
+	        <EditText
+	            android:id="@+id/edt_message"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="15dp"
+	            android:layout_weight="3"
+	            android:hint="@string/write_tip"
+	            android:textSize="16sp" />
+	
+	        <Button
+	        	android:id="@+id/btn_sendmessage"
+	        	android:layout_width="25dp"
+	        	android:layout_height="wrap_content"
+	        	android:layout_weight="1"
+	        	android:layout_marginLeft="5dp" 
+	        	android:layout_marginRight="5dp"
+	        	android:text="@string/send"
+	        	android:textSize="20sp"
+	        	android:textColor="#0000FF"/>        
+	    </LinearLayout>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp">
+	    	<TextView
+	    	    android:id="@+id/tv_chat"
+	    	    android:layout_width="match_parent"
+	    	    android:layout_height="wrap_content"
+	    	    android:layout_marginLeft="15dp"
+	    	    android:layout_marginRight="15dp"
+	    	    android:paddingTop="7dp"
+	    	    android:textSize="15sp"/>
+		</ScrollView>
+    </LinearLayout>
+    
+    
+</RelativeLayout>
