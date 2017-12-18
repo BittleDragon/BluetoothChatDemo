@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.ref.WeakReference;
 import java.util.Set;
 
 import cn.vn.bluetooth.R;
@@ -42,40 +43,50 @@ public class ClientActivity extends Activity implements OnClickListener {
     private ProgressDialog mProgressDialog;
     private BluetoothChatUtil mBlthChatUtil;
 
-    private Handler mHandler = new Handler() {
+    private Handler mHandler;
+
+    private static class ClientHandler extends Handler {
+
+        private WeakReference<ClientActivity> weakReference;
+
+        public ClientHandler(ClientActivity activity) {
+            weakReference = new WeakReference<ClientActivity>(activity);
+        }
+
         public void handleMessage(Message msg) {
+            ClientActivity clientActivity = weakReference.get();
             switch (msg.what) {
                 case BluetoothChatUtil.STATE_CONNECTED:
                     String deviceName = msg.getData().getString(BluetoothChatUtil.DEVICE_NAME);
-                    mBtConnectState.setText("已成功连接到设备" + deviceName);
-                    if (mProgressDialog.isShowing()) {
-                        mProgressDialog.dismiss();
+                    clientActivity.mBtConnectState.setText("已成功连接到设备" + deviceName);
+                    if (clientActivity.mProgressDialog.isShowing()) {
+                        clientActivity.mProgressDialog.dismiss();
                     }
                     break;
                 case BluetoothChatUtil.STATAE_CONNECT_FAILURE:
-                    if (mProgressDialog.isShowing()) {
-                        mProgressDialog.dismiss();
+                    if (clientActivity.mProgressDialog.isShowing()) {
+                        clientActivity.mProgressDialog.dismiss();
                     }
-                    Toast.makeText(getApplicationContext(), "连接失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(clientActivity.getApplicationContext(), "连接失败", Toast.LENGTH_SHORT).show();
                     break;
                 case BluetoothChatUtil.MESSAGE_DISCONNECTED:
-                    if (mProgressDialog.isShowing()) {
-                        mProgressDialog.dismiss();
+                    if (clientActivity.mProgressDialog.isShowing()) {
+                        clientActivity.mProgressDialog.dismiss();
                     }
-                    mBtConnectState.setText("与设备断开连接");
+                    clientActivity.mBtConnectState.setText("与设备断开连接");
                     break;
                 case BluetoothChatUtil.MESSAGE_READ: {
                     byte[] buf = msg.getData().getByteArray(BluetoothChatUtil.READ_MSG);
                     String str = new String(buf, 0, buf.length);
-                    Toast.makeText(getApplicationContext(), "读成功" + str, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(clientActivity.getApplicationContext(), "读成功" + str, Toast.LENGTH_SHORT).show();
 
-                    mTvChat.setText(mTvChat.getText().toString() + "\n" + str);
+                    clientActivity.mTvChat.setText(clientActivity.mTvChat.getText().toString() + "\n" + str);
                     break;
                 }
                 case BluetoothChatUtil.MESSAGE_WRITE: {
                     byte[] buf = (byte[]) msg.obj;
                     String str = new String(buf, 0, buf.length);
-                    Toast.makeText(getApplicationContext(), "发送成功" + str, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(clientActivity.getApplicationContext(), "发送成功" + str, Toast.LENGTH_SHORT).show();
                     break;
                 }
                 default:
@@ -90,6 +101,7 @@ public class ClientActivity extends Activity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.client);
+        mHandler = new ClientHandler(this);
         mContext = this;
         initView();
         initBluetooth();
