@@ -8,6 +8,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import cn.vn.bluetooth.R;
 
+/**
+ * 主页
+ */
 public class MainActivity extends Activity implements OnClickListener {
 	private Button mBtnClient;
 	private Button mBtnServer;
